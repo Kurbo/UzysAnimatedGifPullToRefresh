@@ -111,7 +111,7 @@
 		95F22CE3190A5F860022DD8D /* Preloader_9_00080@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95F22C90190A5F860022DD8D /* Preloader_9_00080@2x.png */; };
 		95F22CE4190A5F860022DD8D /* Preloader_9_00081@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95F22C91190A5F860022DD8D /* Preloader_9_00081@2x.png */; };
 		95F22CE5190A5F860022DD8D /* Preloader_9_00082@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95F22C92190A5F860022DD8D /* Preloader_9_00082@2x.png */; };
-		AC86B3DB1CD1132E00FBB097 /* UIImageView+AnimationCompletion.m in Sources */ = {isa = PBXBuildFile; fileRef = AC86B3DA1CD1132E00FBB097 /* UIImageView+AnimationCompletion.m */; };
+		AC86B3DE1CD1174700FBB097 /* UIImageView+AnimationCompletion.m in Sources */ = {isa = PBXBuildFile; fileRef = AC86B3DD1CD1174700FBB097 /* UIImageView+AnimationCompletion.m */; };
 		CE1FD89DCE194AF7A5E9D223 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 617B774758074C728B20BD24 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -240,8 +240,8 @@
 		95F22C90190A5F860022DD8D /* Preloader_9_00080@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Preloader_9_00080@2x.png"; sourceTree = "<group>"; };
 		95F22C91190A5F860022DD8D /* Preloader_9_00081@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Preloader_9_00081@2x.png"; sourceTree = "<group>"; };
 		95F22C92190A5F860022DD8D /* Preloader_9_00082@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Preloader_9_00082@2x.png"; sourceTree = "<group>"; };
-		AC86B3D91CD1132E00FBB097 /* UIImageView+AnimationCompletion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AnimationCompletion.h"; path = "../../../../../kurbo-ios/Kurbo/KBKit/UIImageView+AnimationCompletion.h"; sourceTree = "<group>"; };
-		AC86B3DA1CD1132E00FBB097 /* UIImageView+AnimationCompletion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AnimationCompletion.m"; path = "../../../../../kurbo-ios/Kurbo/KBKit/UIImageView+AnimationCompletion.m"; sourceTree = "<group>"; };
+		AC86B3DC1CD1174700FBB097 /* UIImageView+AnimationCompletion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AnimationCompletion.h"; sourceTree = "<group>"; };
+		AC86B3DD1CD1174700FBB097 /* UIImageView+AnimationCompletion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AnimationCompletion.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,8 +363,8 @@
 		95F0EAC818F3909C00EB27DF /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				AC86B3D91CD1132E00FBB097 /* UIImageView+AnimationCompletion.h */,
-				AC86B3DA1CD1132E00FBB097 /* UIImageView+AnimationCompletion.m */,
+				AC86B3DC1CD1174700FBB097 /* UIImageView+AnimationCompletion.h */,
+				AC86B3DD1CD1174700FBB097 /* UIImageView+AnimationCompletion.m */,
 				95F0EAD118F390BE00EB27DF /* UIScrollView+UzysAnimatedGifPullToRefresh.h */,
 				95F0EAD218F390BE00EB27DF /* UIScrollView+UzysAnimatedGifPullToRefresh.m */,
 				9502C6DF18F551DD001CEFE7 /* UzysAnimatedGifActivityIndicator.h */,
@@ -694,7 +694,7 @@
 				95F0EAA018F3906E00EB27DF /* main.m in Sources */,
 				95F0EAAA18F3906E00EB27DF /* uzysViewController.m in Sources */,
 				95F0EAA418F3906E00EB27DF /* uzysAppDelegate.m in Sources */,
-				AC86B3DB1CD1132E00FBB097 /* UIImageView+AnimationCompletion.m in Sources */,
+				AC86B3DE1CD1174700FBB097 /* UIImageView+AnimationCompletion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
