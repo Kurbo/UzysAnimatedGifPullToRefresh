@@ -18,7 +18,7 @@
 - (void)addPullToRefreshActionHandler:(actionHandler)handler
                        ProgressImages:(NSArray *)progressImages
                         LoadingImages:(NSArray *)loadingImages
-                    ProgressScrollThreshold:(NSInteger)threshold
+              ProgressScrollThreshold:(NSInteger)threshold
                LoadingImagesFrameRate:(NSInteger)lframe;
 
 - (void)addPullToRefreshActionHandler:(actionHandler)handler
@@ -37,6 +37,13 @@
 - (void)addPullToRefreshActionHandler:(actionHandler)handler
                 ProgressImagesGifName:(NSString *)progressGifName
                  LoadingImagesGifName:(NSString *)loadingGifName
+              ProgressScrollThreshold:(NSInteger)threshold
+                LoadingImageFrameRate:(NSInteger)frameRate;
+
+- (void)addPullToRefreshActionHandler:(actionHandler)handler
+                ProgressImagesGifName:(NSString *)progressGifName
+                 LoadingImagesGifName:(NSString *)loadingGifName
+                    LoopImagesGifName:(NSString *)loapingGifName
               ProgressScrollThreshold:(NSInteger)threshold
                 LoadingImageFrameRate:(NSInteger)frameRate;
 

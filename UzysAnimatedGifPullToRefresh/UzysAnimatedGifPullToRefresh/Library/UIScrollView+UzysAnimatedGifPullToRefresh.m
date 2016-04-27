@@ -8,7 +8,7 @@
 
 #import "UIScrollView+UzysAnimatedGifPullToRefresh.h"
 #import <objc/runtime.h>
-#import "AnimatedGIFImageSerialization.h"
+#import <AnimatedGIFImageSerialization.h>
 #define IS_IOS7 (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1 && floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
 #define IS_IOS8  ([[[UIDevice currentDevice] systemVersion] compare:@"8" options:NSNumericSearch] != NSOrderedAscending)
 #define IS_IPHONE6PLUS ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) && [[UIScreen mainScreen] nativeScale] == 3.0f)
@@ -27,9 +27,20 @@ static char UIScrollViewPullToRefreshView;
               ProgressScrollThreshold:(NSInteger)threshold
                LoadingImagesFrameRate:(NSInteger)lframe
 {
+    [self addPullToRefreshActionHandler:handler ProgressImages:progressImages LoadingImages:loadingImages LoopImages:nil ProgressScrollThreshold:threshold LoadingImagesFrameRate:lframe];
+}
+
+- (void)addPullToRefreshActionHandler:(actionHandler)handler
+                       ProgressImages:(NSArray *)progressImages
+                        LoadingImages:(NSArray *)loadingImages
+                           LoopImages:(NSArray *)loopImages
+              ProgressScrollThreshold:(NSInteger)threshold
+               LoadingImagesFrameRate:(NSInteger)lframe
+{
     if(self.pullToRefreshView == nil)
-    {
-        UzysAnimatedGifActivityIndicator *view = [[UzysAnimatedGifActivityIndicator alloc] initWithProgressImages:progressImages LoadingImages:loadingImages ProgressScrollThreshold:threshold LoadingImagesFrameRate:lframe];
+     {
+        UzysAnimatedGifActivityIndicator *view = [[UzysAnimatedGifActivityIndicator alloc] initWithProgressImages:progressImages LoadingImages:loadingImages LoopImages:loopImages ProgressScrollThreshold:threshold LoadingImagesFrameRate:lframe];
+        
         view.pullToRefreshHandler = handler;
         view.scrollView = self;
         view.frame = CGRectMake((self.bounds.size.width - view.bounds.size.width)/2,
@@ -37,32 +48,32 @@ static char UIScrollViewPullToRefreshView;
         view.originalTopInset = self.contentInset.top;
         
         if(IS_IOS7)
-        {
+         {
             if(cEqualFloats(self.contentInset.top, 64.00, cDefaultFloatComparisonEpsilon) && cEqualFloats(self.frame.origin.y, 0.0, cDefaultFloatComparisonEpsilon))
-            {
+             {
                 view.portraitTopInset = 64.0;
                 view.landscapeTopInset = 52.0;
-            }
-        }
+             }
+         }
         else if(IS_IOS8)
-        {
+         {
             if(cEqualFloats(self.contentInset.top, 0.00, cDefaultFloatComparisonEpsilon) &&cEqualFloats(self.frame.origin.y, 0.0, cDefaultFloatComparisonEpsilon))
-            {
+             {
                 view.portraitTopInset = 64.0;
                 view.originalTopInset = 64.0;
-
+                
                 if(IS_IPHONE6PLUS)
                     view.landscapeTopInset = 44.0;
                 else
                     view.landscapeTopInset = 32.0;
-
-            }
-        }
+                
+             }
+         }
         [self addSubview:view];
         [self sendSubviewToBack:view];
         self.pullToRefreshView = view;
         self.showPullToRefresh = YES;
-    }
+     }
     
 }
 
@@ -99,10 +110,29 @@ static char UIScrollViewPullToRefreshView;
                 ProgressScrollThreshold:threshold
                  LoadingImagesFrameRate:frameRate];
 }
+- (void)addPullToRefreshActionHandler:(actionHandler)handler
+                ProgressImagesGifName:(NSString *)progressGifName
+                 LoadingImagesGifName:(NSString *)loadingGifName
+                    LoopImagesGifName:(NSString *)loopingGifName
+              ProgressScrollThreshold:(NSInteger)threshold
+                LoadingImageFrameRate:(NSInteger)frameRate {
+    UIImage *progressImage = [[UIImage alloc] initWithContentsOfFile:[[[NSBundle mainBundle] resourcePath]  stringByAppendingPathComponent:progressGifName]];
+    UIImage *loadingImage = [[UIImage alloc] initWithContentsOfFile:[[[NSBundle mainBundle] resourcePath]  stringByAppendingPathComponent:loadingGifName]];
+    UIImage *loopImages = [[UIImage alloc] initWithContentsOfFile:[[[NSBundle mainBundle] resourcePath]  stringByAppendingPathComponent:loopingGifName]];
+    
+    [self addPullToRefreshActionHandler:handler
+                         ProgressImages:progressImage.images
+                          LoadingImages:loadingImage.images
+                             LoopImages:loopImages.images
+                ProgressScrollThreshold:threshold
+                 LoadingImagesFrameRate:frameRate];
+}
+
+
 - (void)addPullToRefreshActionHandler:(actionHandler)handler ProgressImagesGifName:(NSString *)progressGifName ProgressScrollThreshold:(NSInteger)threshold
 {
     UIImage *progressImage = [[UIImage alloc] initWithContentsOfFile:[[[NSBundle mainBundle] resourcePath]  stringByAppendingPathComponent:progressGifName]]; //[UIImage imageNamed:progressGifName];
-
+    
     [self addPullToRefreshActionHandler:handler
                          ProgressImages:progressImage.images
                 ProgressScrollThreshold:threshold];
@@ -115,13 +145,13 @@ static char UIScrollViewPullToRefreshView;
     
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
     if(orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown)
-    {
+     {
         self.pullToRefreshView.originalTopInset = self.pullToRefreshView.portraitTopInset;
-    }
+     }
     else
-    {
+     {
         self.pullToRefreshView.originalTopInset = self.pullToRefreshView.landscapeTopInset;
-    }
+     }
 }
 
 - (void)removePullToRefreshActionHandler
@@ -154,23 +184,23 @@ static char UIScrollViewPullToRefreshView;
     self.pullToRefreshView.hidden = !showPullToRefresh;
     
     if(showPullToRefresh)
-    {
+     {
         if(!self.pullToRefreshView.isObserving)
-        {
+         {
             [self addObserver:self.pullToRefreshView forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
             [self addObserver:self.pullToRefreshView forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
             [self addObserver:self.pullToRefreshView forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
             [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification
-             object:[UIDevice currentDevice]];
+                                                       object:[UIDevice currentDevice]];
             
             self.pullToRefreshView.isObserving = YES;
-        }
-    }
+         }
+     }
     else
-    {
+     {
         if(self.pullToRefreshView.isObserving)
-        {
+         {
             [self removeObserver:self.pullToRefreshView forKeyPath:@"contentOffset"];
             [self removeObserver:self.pullToRefreshView forKeyPath:@"contentSize"];
             [self removeObserver:self.pullToRefreshView forKeyPath:@"frame"];
@@ -178,8 +208,8 @@ static char UIScrollViewPullToRefreshView;
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
             
             self.pullToRefreshView.isObserving = NO;
-        }
-    }
+         }
+     }
 }
 
 - (BOOL)showPullToRefresh

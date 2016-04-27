@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, UZYSPullToRefreshState) {
 @property (nonatomic,assign) UIActivityIndicatorViewStyle activityIndicatorStyle;
 
 - (id)initWithProgressImages:(NSArray *)progressImg LoadingImages:(NSArray *)loadingImages ProgressScrollThreshold:(NSInteger)threshold LoadingImagesFrameRate:(NSInteger)lFrameRate;
+- (id)initWithProgressImages:(NSArray *)progressImg LoadingImages:(NSArray *)loadingImages LoopImages:(NSArray *)loopImages ProgressScrollThreshold:(NSInteger)threshold  LoadingImagesFrameRate:(NSInteger)lFrameRate;
 - (void)stopIndicatorAnimation;
 - (void)manuallyTriggered;
 - (void)setSize:(CGSize) size;
