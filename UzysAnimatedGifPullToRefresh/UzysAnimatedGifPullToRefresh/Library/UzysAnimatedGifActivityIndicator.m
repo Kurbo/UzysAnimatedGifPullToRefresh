@@ -20,7 +20,6 @@
 @interface UzysAnimatedGifActivityIndicator()
 @property (nonatomic,strong) UIImageView *imageViewProgress;
 @property (nonatomic,strong) UIImageView *imageViewLoading;
-@property (nonatomic,strong) UIImageView *imageViewLoop;
 
 @property (nonatomic,strong) NSArray *pImgArrProgress;
 @property (nonatomic,strong) NSArray *pImgArrLoading;
@@ -96,29 +95,30 @@
         self.imageViewLoading.alpha = 0.0f;
         self.imageViewLoading.backgroundColor = [UIColor clearColor];
         [self addSubview:self.imageViewLoading];
-        
-        self.imageViewLoop = [[UIImageView alloc] init];
-        self.imageViewLoop.contentMode = UIViewContentModeScaleAspectFit;
-        self.imageViewLoop.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-        self.imageViewLoop.frame = self.bounds;
-        self.imageViewLoop.animationImages = self.pImgArrLoop;
-        self.imageViewLoop.animationDuration = (CGFloat)ceilf((1.0/(CGFloat)self.LoadingFrameRate) * (CGFloat)self.imageViewLoop.animationImages.count);
-        self.imageViewLoop.alpha = 0.0f;
-        self.imageViewLoop.backgroundColor = [UIColor clearColor];
-        [self addSubview:self.imageViewLoop];
      }
     self.alpha = 0.0f;
     [self actionStopState];
+}
+
+- (void)setupLoadingForLoop:(BOOL)loop {
+    if (loop) {
+        self.imageViewLoading.animationImages = self.pImgArrLoop;
+        self.imageViewLoading.animationDuration = (CGFloat)ceilf((1.0/(CGFloat)self.LoadingFrameRate) * (CGFloat)self.imageViewLoading.animationImages.count);
+        self.imageViewLoading.animationRepeatCount = 0;
+    } else {
+        self.imageViewLoading.animationImages = self.pImgArrLoading;
+        self.imageViewLoading.animationDuration = (CGFloat)ceilf((1.0/(CGFloat)self.LoadingFrameRate) * (CGFloat)self.imageViewLoading.animationImages.count);
+        self.imageViewLoading.animationRepeatCount = 1;
+    }
 }
 
 - (void)_initAnimationView {
     
     if(self.pImgArrLoading.count>0)
      {
-        [self.imageViewLoading stopAnimating];
         self.imageViewLoading.alpha = 0.0f;
-        [self.imageViewLoop stopAnimating];
-        self.imageViewLoop.alpha = 0.0f;
+        [self.imageViewLoading stopAnimating];
+        [self setupLoadingForLoop:NO];
      }
     else
      {
@@ -222,7 +222,6 @@
 {
     self.imageViewLoading = nil;
     self.imageViewProgress = nil;
-    self.imageViewLoop = nil;
     self.pImgArrLoading = nil;
     self.pImgArrProgress = nil;
     self.pImgArrLoop = nil;
@@ -314,24 +313,26 @@
 
 -(void)actionStopState
 {
-    self.state = UZYSGIFPullToRefreshStateCanFinish;
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction animations:^{
-        if(self.pImgArrLoading.count>0)
-         {
+    if (self.state == UZYSGIFPullToRefreshStateLoading) {
+        self.state = UZYSGIFPullToRefreshStateCanFinish;
+        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction animations:^{
+            if(self.pImgArrLoading.count>0)
+             {
+                
+             }
+            else
+             {
+                self.activityIndicatorView.transform = CGAffineTransformMakeScale(0.1, 0.1);
+             }
+        } completion:^(BOOL finished) {
             
-         }
-        else
-         {
-            self.activityIndicatorView.transform = CGAffineTransformMakeScale(0.1, 0.1);
-         }
-    } completion:^(BOOL finished) {
+        }];
         
-    }];
-    
-    [self resetScrollViewContentInset:^{
-    } animation:YES];
-    
-    [self _initAnimationView];
+        [self resetScrollViewContentInset:^{
+        } animation:YES];
+        
+        [self _initAnimationView];
+    }
 }
 -(void)actionTriggeredState
 {
@@ -361,9 +362,10 @@
     if(self.pImgArrLoading.count>0)
      {
         [self.imageViewLoading startAnimatingWithCompletionBlock:^(BOOL success) {
-            self.imageViewLoop.alpha = 1.0;
-            self.imageViewLoading.alpha = 0.0f;
-            [self.imageViewLoop startAnimating];
+            if (self.imageViewLoading.alpha > 0.0f) {
+                [self setupLoadingForLoop:YES];
+                [self.imageViewLoading startAnimating];
+            }
         }];
      }
     else
@@ -462,7 +464,6 @@
     self.activityIndicatorView.frame = self.bounds;
     self.imageViewProgress.frame = self.bounds;
     self.imageViewLoading.frame = self.bounds;
-    self.imageViewLoop.frame = self.bounds;
 }
 - (void)setIsVariableSize:(BOOL)isVariableSize
 {
@@ -481,7 +482,7 @@
         self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
         self.activityIndicatorView.hidesWhenStopped = YES;
         [self insertSubview:self.activityIndicatorView belowSubview:self.imageViewProgress];
-        self.activityIndicatorView.frame = self.bounds;        
+        self.activityIndicatorView.frame = self.bounds;
      }
 }
 
