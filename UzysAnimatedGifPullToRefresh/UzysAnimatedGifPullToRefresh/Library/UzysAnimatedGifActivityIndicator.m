@@ -103,7 +103,7 @@
 - (void)setupLoadingForLoop:(BOOL)loop {
     if (loop) {
         self.imageViewLoading.animationImages = self.pImgArrLoop;
-        self.imageViewLoading.animationDuration = (CGFloat)ceilf((1.0/(CGFloat)self.LoadingFrameRate) * (CGFloat)self.imageViewLoading.animationImages.count);
+        self.imageViewLoading.animationDuration = (1.0/(CGFloat)self.LoadingFrameRate) * (CGFloat)self.imageViewLoading.animationImages.count;
         self.imageViewLoading.animationRepeatCount = 0;
     } else {
         self.imageViewLoading.animationImages = self.pImgArrLoading;
